@@ -1,34 +1,35 @@
 from time import sleep
 from knight import knight
 
-def solution(src, dest, total_moves = 0, memo = dict()):
+def solution(src, dest):
     if src == dest:
-        return total_moves
-    
-    total_moves += 1
-    print('src:', src, 'dest:', dest)
-    if not src in memo.keys():
-        src_moves = list()
-        src_moves.append(knight.move_up_left(src))
-        src_moves.append(knight.move_up_right(src))
-        src_moves.append(knight.move_left_up(src))
-        src_moves.append(knight.move_right_up(src))
-        src_moves.append(knight.move_down_left(src))
-        src_moves.append(knight.move_down_right(src))
-        src_moves.append(knight.move_left_down(src))
-        src_moves.append(knight.move_right_down(src))
-        print(src_moves)
-        memo[src] = sorted(src_moves, key=lambda x: abs(dest - x) if dest - x >= 0 else 0)
+        return 0
 
-    src_moves = memo[src]
-    print(src_moves)
-    sleep(.3)
-    # for move in src_moves:
-    if not dest == src_moves[0]:
-        return solution(src_moves[0], dest, total_moves, memo)
+    total_moves = 0
+    position = 0
+    moves = dict()
+
+    moves[0] = knight.move_down_right
+    moves[1] = knight.move_right_up
+    moves[2] = knight.move_left_up
+    while not position == dest:
+        # print('while')
+        for move in moves:
+            # print('for')
+            # sleep(.1)
+            total_moves += 1
+
+            position = moves[move](src)
+            # print(position)
+            if position < 0 or position > 63:
+                continue
+            
+            if position == dest:
+                break
+
+            src = position
 
     return total_moves
-
     
 # def solution(src, dest):
 #     # pegar a posicao do src na matriz
